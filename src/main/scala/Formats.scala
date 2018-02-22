@@ -23,11 +23,11 @@ trait Serialization[M] {
 }
 
 trait Formats {
-  implicit val componentState: RootJsonFormat[ComponentState] = new RootJsonFormat[ComponentState] {
-    override def write(state: ComponentState): JsValue = JsString(state.name)
+  implicit val componentState: RootJsonFormat[ComponentStateValue] = new RootJsonFormat[ComponentStateValue] {
+    override def write(state: ComponentStateValue): JsValue = JsString(state.name)
 
-    override def read(json: JsValue): ComponentState = json match {
-      case JsString(name) => ComponentState.findBy(name) match {
+    override def read(json: JsValue): ComponentStateValue = json match {
+      case JsString(name) => ComponentStateValue.findBy(name) match {
         case Some(state) => state
         case None => deserializationError("Invalid component state")
       }
@@ -44,26 +44,26 @@ trait Formats {
   implicit val triggersFormat: RootJsonFormat[Triggers] = jsonFormat1(Triggers.apply)
 }
 
-sealed trait ComponentState {
+sealed trait ComponentStateValue {
   def name: String
   def prio: Int
-  def >=(componentState: ComponentState): Boolean = this.prio >= componentState.prio
+  def >=(componentState: ComponentStateValue): Boolean = this.prio >= componentState.prio
 }
 
-case class NoData(override val name: String = "no_data", override val prio: Int = 0) extends ComponentState
-case class Clear(override val name: String = "clear", override val prio: Int = 1) extends ComponentState
-case class Warning(override val name: String = "warning", override val prio: Int = 2) extends ComponentState
-case class Alert(override val name: String = "alert", override val prio: Int = 3) extends ComponentState
+case class NoData(override val name: String = "no_data", override val prio: Int = 0) extends ComponentStateValue
+case class Clear(override val name: String = "clear", override val prio: Int = 1) extends ComponentStateValue
+case class Warning(override val name: String = "warning", override val prio: Int = 2) extends ComponentStateValue
+case class Alert(override val name: String = "alert", override val prio: Int = 3) extends ComponentStateValue
 
-object ComponentState {
+object ComponentStateValue {
   private val allowedStates = Seq(NoData(), Clear(), Warning(), Alert())
-  def findBy(name: String): Option[ComponentState] = allowedStates.find(_.name == name)
+  def findBy(name: String): Option[ComponentStateValue] = allowedStates.find(_.name == name)
 }
 
 case class Dependencies(graph: Graph)
 case class Graph(components: List[Component])
-case class Component(id : String, ownState: ComponentState, derivedState: ComponentState, checkStates: Map[String, ComponentState],
+case class Component(id : String, ownState: ComponentStateValue, derivedState: ComponentStateValue, checkStates: Map[String, ComponentStateValue],
                      dependsOn: Option[List[String]], dependencyOf: Option[List[String]])
 
 case class Triggers(events: List[Event])
-case class Event(timestamp: String, component: String, checkState: String, state: ComponentState)
+case class Event(timestamp: String, component: String, checkState: String, state: ComponentStateValue)
