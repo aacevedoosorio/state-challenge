@@ -18,14 +18,14 @@ fi
 echo "Preparing to submit solution to assessment ${AT_GUID}"
 echo ""
 
-../bin/package.sh
+./bin/package.sh
 
 if [ "$?" -ne "0" ]; then
   echo "Packaging solution failed"
   exit 1
 fi
 
-SUBMISSION_SIZE=$(stat -f %z "submission.zip")
+SUBMISSION_SIZE=$(stat -c %s "submission.zip")
 if [ "$SUBMISSION_SIZE" -gt "100000000" ]; then
   echo ""
   echo "Submission file size limit for submitting via this script is 10MB."

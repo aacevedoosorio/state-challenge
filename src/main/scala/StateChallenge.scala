@@ -1,5 +1,4 @@
 
-import formats._
 import fp.State
 import spray.json._
 

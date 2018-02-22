@@ -1,5 +1,3 @@
-package formats
-
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 

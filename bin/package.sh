@@ -12,7 +12,7 @@ fi
 rm -f submission.zip
 
 # Run the test cases
-../bin/test.sh
+./bin/test.sh
 
 if [ "$?" -ne "0" ]; then
   echo "Testing solution failed"
