@@ -1,0 +1,1 @@
+{"graph":{"components":[{"check_states":{"CPU load":"clear","RAM usage":"no_data"},"depends_on":["db"],"id":"app","own_state":"clear","derived_state":"warning"},{"check_states":{"CPU load":"warning","RAM usage":"no_data"},"id":"db","own_state":"warning","derived_state":"warning","dependency_of":["app"]}]}}
