@@ -11,14 +11,22 @@ object StateChallenge extends ConfigParser[StateConfig] with Serializations with
   type ComponentsState[A] = State[List[Component], A]
   type ComponentState[A] = State[Component, A]
 
+  def usage: String = s"""
+                         |Usage: ${getClass.getName} <initial-state-json-file> <events-json-file>
+                         |
+                         |    <initial-state-json-file> Initial state json file (e.g. ./state-challenge/2-sample-input.json)
+                         |    <events-json-file> Events json file (e.g. ./state-challenge/2-sample-events.json)
+                         |details.
+     """.stripMargin
+
   def main(args: Array[String]): Unit = (for {
     config            <- readConfig(args)
-    dependencies      <- parseFile[Dependencies](config.initialFile)
+    dependencies      <- parseFile[Application](config.initialFile)
     triggers          <- parseFile[Triggers](config.eventsFile)
     updatedComponents <- processEvents(triggers.events)(dependencies.graph.components)
   } yield updatedComponents) match {
-    case Success(components) => println(Dependencies(Graph(components)).toJson.compactPrint)
-    case Failure(err: IllegalArgumentException) => println(s"IllegalArgumentException $err")
+    case Success(components) => println(Application(Graph(components)).toJson.compactPrint)
+    case Failure(err: IllegalArgumentException) => println(usage)
     case Failure(err) => println(s"Some other error $err")
   }
 

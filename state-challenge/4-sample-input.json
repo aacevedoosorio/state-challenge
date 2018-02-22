@@ -1,0 +1,43 @@
+{
+  "graph": {
+    "components": [
+      {
+        "id": "app",
+        "own_state": "no_data",
+        "derived_state": "no_data",
+        "check_states": {
+          "CPU load": "no_data",
+          "RAM usage": "no_data"
+        },
+        "depends_on": [
+          "db",
+          "balancer"
+        ]
+      },
+      {
+        "id": "db",
+        "own_state": "no_data",
+        "derived_state": "no_data",
+        "check_states": {
+          "CPU load": "no_data",
+          "RAM usage": "no_data"
+        },
+        "dependency_of": [
+          "app"
+        ]
+      },
+      {
+        "id": "balancer",
+        "own_state": "no_data",
+        "derived_state": "no_data",
+        "check_states": {
+          "CPU load": "no_data",
+          "RAM usage": "no_data"
+        },
+        "dependency_of": [
+          "app"
+        ]
+      }
+    ]
+  }
+}

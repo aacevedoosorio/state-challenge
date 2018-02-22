@@ -13,7 +13,7 @@ trait Serializations  { self: Formats =>
     override def fromJson(json: String): Try[M] = Try { json.parseJson.convertTo[M] }
   }
 
-  final implicit protected def graphSerializer: Serialization[Dependencies] = serializer[Dependencies]
+  final implicit protected def graphSerializer: Serialization[Application] = serializer[Application]
   final implicit protected def eventsSerializer: Serialization[Triggers] = serializer[Triggers]
 }
 
@@ -38,7 +38,7 @@ trait Formats {
   implicit val componentFormat: RootJsonFormat[Component] = jsonFormat(Component, "id", "own_state", "derived_state", "check_states",
     "depends_on", "dependency_of")
   implicit val graphFormat: RootJsonFormat[Graph] = jsonFormat1(Graph.apply)
-  implicit val dependenciesFormat: RootJsonFormat[Dependencies] = jsonFormat1(Dependencies.apply)
+  implicit val dependenciesFormat: RootJsonFormat[Application] = jsonFormat1(Application.apply)
 
   implicit val eventFormat: RootJsonFormat[Event] = jsonFormat(Event, "timestamp", "component", "check_state", "state")
   implicit val triggersFormat: RootJsonFormat[Triggers] = jsonFormat1(Triggers.apply)
@@ -60,7 +60,7 @@ object ComponentStateValue {
   def findBy(name: String): Option[ComponentStateValue] = allowedStates.find(_.name == name)
 }
 
-case class Dependencies(graph: Graph)
+case class Application(graph: Graph)
 case class Graph(components: List[Component])
 case class Component(id : String, ownState: ComponentStateValue, derivedState: ComponentStateValue, checkStates: Map[String, ComponentStateValue],
                      dependsOn: Option[List[String]], dependencyOf: Option[List[String]])

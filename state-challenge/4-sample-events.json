@@ -1,0 +1,22 @@
+{
+  "events": [
+    {
+      "timestamp": "1",
+      "component": "balancer",
+      "check_state": "RAM usage",
+      "state": "alert"
+    },
+    {
+      "timestamp": "2",
+      "component": "db",
+      "check_state": "CPU load",
+      "state": "warning"
+    },
+    {
+      "timestamp": "3",
+      "component": "app",
+      "check_state": "CPU load",
+      "state": "clear"
+    }
+  ]
+}
